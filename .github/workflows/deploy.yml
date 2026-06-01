@@ -1,0 +1,33 @@
+name: Deploy to VPS
+
+# Auto-deploys on every push to main, and can be triggered manually.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build & restart on the VPS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            set -e
+            export PATH="$HOME/.nvm/versions/node/$(ls $HOME/.nvm/versions/node 2>/dev/null | tail -n1)/bin:$PATH"
+            cd ~/martinstavern
+            git pull origin main
+            npm ci
+            npm run build
+            pm2 startOrReload ecosystem.config.js --update-env
+            pm2 save

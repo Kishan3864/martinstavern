@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Martin's Tavern — Heritage Luxe design system
+   Global tokens, base typography, and reusable component utilities.
+   ========================================================================== */
+
+@layer base {
+  :root {
+    --color-ink: #1a1614;
+    --color-bordeaux: #5c1a1b;
+    --color-forest: #1e3a2f;
+    --color-cream: #f4ece0;
+    --color-brass: #b8862f;
+
+    /* Used by Lenis to drive native-feeling momentum scroll */
+    --header-height: 5.5rem;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Lenis smooth-scroll baseline (see components/providers/SmoothScroll.tsx) */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  body {
+    @apply bg-cream text-ink font-sans antialiased;
+    font-feature-settings: "kern", "liga", "calt";
+  }
+
+  /* Headings default to the display serif. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+    text-wrap: balance;
+  }
+
+  /* Refined text selection in brand colours. */
+  ::selection {
+    background-color: var(--color-brass);
+    color: var(--color-ink);
+  }
+
+  /* Brass focus ring for keyboard users (accessibility). */
+  :focus-visible {
+    outline: 2px solid var(--color-brass);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* A tasteful custom scrollbar on supporting browsers. */
+  ::-webkit-scrollbar {
+    width: 11px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #120f0e;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #5c1a1b;
+    border-radius: 999px;
+    border: 3px solid #120f0e;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #b8862f;
+  }
+}
+
+@layer components {
+  /* Page gutters — consistent editorial margins across the site. */
+  .container-luxe {
+    @apply mx-auto w-full max-w-container px-6 sm:px-8 lg:px-12;
+  }
+
+  /* The small uppercase brass eyebrow label used above section titles. */
+  .eyebrow {
+    @apply inline-flex items-center gap-3 font-sans text-xs font-medium uppercase tracking-label text-brass;
+  }
+  .eyebrow::before {
+    content: "";
+    @apply block h-px w-8 bg-brass/60;
+  }
+
+  /* Primary brass-filled CTA. */
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-brass px-7 py-3.5 font-sans text-xs font-semibold uppercase tracking-wide text-ink transition-colors duration-500 ease-luxe hover:bg-brass-400;
+  }
+
+  /* Outlined CTA — adapts to light or dark surfaces via currentColor. */
+  .btn-outline {
+    @apply relative inline-flex items-center justify-center gap-2 rounded-full border border-current px-7 py-3.5 font-sans text-xs font-semibold uppercase tracking-wide transition-all duration-500 ease-luxe hover:bg-current;
+  }
+
+  /* The classic menu "dotted leader" row: name ....... price */
+  .leader {
+    @apply flex-1 translate-y-[-0.2em] border-b border-dotted border-ink/25;
+  }
+}
+
+@layer utilities {
+  /* Animated gold underline that grows from the left on hover/focus. */
+  .link-underline {
+    @apply relative inline-block;
+  }
+  .link-underline::after {
+    content: "";
+    @apply absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-brass transition-transform duration-500 ease-luxe;
+  }
+  .link-underline:hover::after,
+  .link-underline:focus-visible::after {
+    @apply scale-x-100;
+  }
+
+  /* Subtle parchment vignette used on dark hero sections. */
+  .vignette {
+    box-shadow: inset 0 0 200px 40px rgba(18, 15, 14, 0.55);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+}
+
+/* ==========================================================================
+   Reduced motion — honour the user's OS preference everywhere.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
