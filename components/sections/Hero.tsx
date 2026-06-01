@@ -52,13 +52,14 @@ export default function Hero() {
         </motion.span>
 
         <motion.h1
-          className="max-w-4xl font-display text-5xl font-semibold leading-[1.02] text-cream sm:text-6xl lg:text-8xl"
+          className="max-w-4xl font-display text-5xl font-semibold leading-[1.12] text-cream sm:text-6xl lg:text-8xl"
           variants={container}
           initial="hidden"
           animate="visible"
         >
           {lines.map((text, i) => (
-            <span key={i} className="block overflow-hidden">
+            // pb gives descenders (g, y, p) room so they're never clipped.
+            <span key={i} className="block pb-[0.12em]">
               <motion.span variants={line} className="block">
                 {i === 1 ? (
                   <>
