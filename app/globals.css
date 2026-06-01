@@ -105,9 +105,10 @@
     @apply relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-brass px-7 py-3.5 font-sans text-xs font-semibold uppercase tracking-wide text-ink transition-colors duration-500 ease-luxe hover:bg-brass-400;
   }
 
-  /* Outlined CTA — adapts to light or dark surfaces via currentColor. */
+  /* Outlined CTA — border in the current colour, fills with brass on hover
+     and flips the label to dark ink so it stays readable on any background. */
   .btn-outline {
-    @apply relative inline-flex items-center justify-center gap-2 rounded-full border border-current px-7 py-3.5 font-sans text-xs font-semibold uppercase tracking-wide transition-all duration-500 ease-luxe hover:bg-current;
+    @apply relative inline-flex items-center justify-center gap-2 rounded-full border border-current px-7 py-3.5 font-sans text-xs font-semibold uppercase tracking-wide transition-all duration-500 ease-luxe hover:border-brass hover:bg-brass hover:text-ink;
   }
 
   /* The classic menu "dotted leader" row: name ....... price */
