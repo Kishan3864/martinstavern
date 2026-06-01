@@ -1,13 +1,14 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import ParallaxImage from "@/components/ui/ParallaxImage";
+import HeroBackground from "@/components/sections/HeroBackground";
 import { ButtonLink } from "@/components/ui/Button";
 import { SITE } from "@/lib/site";
 
 /**
- * Full-bleed hero with a slow parallax image, an editorial headline that
- * staggers in word-by-word, a tagline, and the two primary CTAs.
+ * Full-bleed hero with an auto-sliding photo carousel (3s crossfade + Ken
+ * Burns), an editorial headline that staggers in line-by-line, a tagline, and
+ * the two primary CTAs.
  */
 export default function Hero() {
   const reduceMotion = useReducedMotion();
@@ -32,20 +33,12 @@ export default function Hero() {
 
   return (
     <section className="relative h-[100svh] min-h-[640px] w-full overflow-hidden bg-ink-900">
-      {/* PLACEHOLDER: Replace with a signature wide shot of Martin's interior
-          (the dining room / bar) or a hero dish. */}
-      <ParallaxImage
-        src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=2000&q=80"
-        alt="Warm, candlelit interior of Martin's Tavern in the evening"
-        strength={120}
-        priority
-        sizes="100vw"
-        className="absolute inset-0 h-full w-full"
-      />
+      {/* Auto-sliding signature photography (3s crossfade). */}
+      <HeroBackground />
 
       {/* Tonal scrims for legibility + the heritage vignette. */}
-      <div className="absolute inset-0 bg-gradient-to-b from-ink-900/70 via-ink-900/30 to-ink-900/85" />
-      <div className="absolute inset-0 vignette" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-ink-900/70 via-ink-900/30 to-ink-900/85" />
+      <div className="pointer-events-none absolute inset-0 vignette" />
 
       {/* Content */}
       <div className="container-luxe relative z-10 flex h-full flex-col justify-center pb-16 pt-[var(--header-height)]">
