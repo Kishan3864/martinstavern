@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
+import { headers } from "next/headers";
 import "./globals.css";
 
 import SmoothScroll from "@/components/providers/SmoothScroll";
@@ -106,6 +107,20 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // The /permission admin panel must bypass BOTH the kill-switch and the
+  // public chrome — otherwise locking the site would lock you out of the
+  // very page used to unlock it.
+  const pathname = headers().get("x-pathname") || "";
+  if (pathname.startsWith("/permission")) {
+    return (
+      <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
+        <body className="relative min-h-screen overflow-x-hidden">
+          {children}
+        </body>
+      </html>
+    );
+  }
+
   // Live kill-switch: when false, the entire site is replaced by the locked
   // screen. Evaluated server-side on every request (cached briefly).
   const active = await isSiteActive();

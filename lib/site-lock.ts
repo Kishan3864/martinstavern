@@ -44,3 +44,26 @@ export async function isSiteActive(): Promise<boolean> {
     return true;
   }
 }
+
+/**
+ * Set the lock state (used by the /permission admin toggle). Updates the
+ * database and immediately refreshes the in-process cache so the change is
+ * reflected on the very next page render.
+ */
+export async function setSiteActive(active: boolean): Promise<boolean> {
+  const pool = getPool();
+  if (!pool) throw new Error("Database not configured (DATABASE_URL missing)");
+
+  await pool.query(
+    "UPDATE site_settings SET is_active = $1, updated_at = now() WHERE id = 1",
+    [active]
+  );
+  cache = { value: active, at: Date.now() };
+  return active;
+}
+
+/** Read the live value, bypassing the short cache (for the admin panel). */
+export async function getSiteActiveFresh(): Promise<boolean> {
+  cache = null;
+  return isSiteActive();
+}
